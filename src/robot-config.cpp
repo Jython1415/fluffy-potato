@@ -11,10 +11,10 @@ controller ctlr1;
 #ifndef _PRACTICE_BOT_
 
 // main bot
-motor chassisLF  = motor(PORT1, false);
-motor chassisLB  = motor(PORT9, true);
-motor chassisRF = motor(PORT5, true);
-motor chassisRB = motor(PORT8, false);
+motor chassisLF  = motor(PORT1, true);
+motor chassisLB  = motor(PORT9, false);
+motor chassisRF = motor(PORT5, false);
+motor chassisRB = motor(PORT8, true);
 
 #else
 
