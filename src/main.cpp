@@ -3,6 +3,9 @@
 
 using namespace vex;
 
+// drive selection
+bool chassis_tank_drive = true;
+
 // speed multiplier
 double chassis_speed_multiplier = 0.8;
 
@@ -13,29 +16,23 @@ int main() {
   while (true)
   {
     // speed multiplier control
-    if (ctlr1.ButtonR1.pressing())
+    chassis_speed_multiplier = ctlr1.ButtonR1.pressing() ? 1.0 : ctlr1.ButtonR2.pressing() ? 0.4 : 0.8;
+
+    // chassis control
+    if (chassis_tank_drive)
     {
-      chassis_speed_multiplier = 1.0;
-    }
-    else if (ctlr1.ButtonR2.pressing())
-    {
-      chassis_speed_multiplier = 0.4;
+      // basic tank drive
+      chassisL_set(ctlr1.Axis3.value() * chassis_speed_multiplier);
+      chassisR_set(ctlr1.Axis2.value() * chassis_speed_multiplier);
     }
     else
     {
-      chassis_speed_multiplier = 0.8;
+      // basic arcade control
+      int axis2 = ctlr1.Axis2.value();
+      int axis1 = ctlr1.Axis1.value();
+      chassisL_set((axis2 + axis1) * chassis_speed_multiplier);
+      chassisR_set((axis2 - axis1) * chassis_speed_multiplier);
     }
-
-    // basic tank drive
-    chassisL_set(ctlr1.Axis3.value() * chassis_speed_multiplier);
-    chassisR_set(ctlr1.Axis2.value() * chassis_speed_multiplier);
-
-    // basic arcade control
-    // int axis2 = ctlr1.Axis2.value();
-    // int axis1 = ctlr1.Axis1.value();
-    // chassisL_set((axis2 + axis1) * chassis_speed_multiplier);
-    // chassisR_set((axis2 - axis1) * chassis_speed_multiplier);
-
     // intake control
     if (ctlr1.ButtonL1.pressing())
     {
